@@ -17,7 +17,7 @@ class App extends Component {
         id: 1,
         nama_karyawan: '',
         jabatan: '',
-        jenis_kelamin: '',
+        jenis_kelamin: 'pilih',
         tanggal_lahir: ''
     },
     isUpdate: false
@@ -40,7 +40,7 @@ class App extends Component {
               id: 1,
               nama_karyawan: '',
               jabatan: '',
-              jenis_kelamin: '',
+              jenis_kelamin: 'pilih',
               tanggal_lahir: ''
             }
         })
@@ -57,7 +57,7 @@ class App extends Component {
               id: 1,
               nama_karyawan: '',
               jabatan: '',
-              jenis_kelamin: '',
+              jenis_kelamin: 'pilih',
               tanggal_lahir: ''
             }
         })
@@ -79,11 +79,22 @@ class App extends Component {
   }
 
   handleFormChange = (event) => {
-    // console.log(event.target.value);
+    // console.log(event.target);
     let formKaryawanNew = {...this.state.formKaryawan};
     let timestamp = new Date().getTime();
     if(!this.state.isUpdate) formKaryawanNew['id'] = timestamp;
     formKaryawanNew[event.target.name] = event.target.value;
+    this.setState ({
+      formKaryawan: formKaryawanNew
+    })
+  }
+
+  handleOptionChange = (event, data) => {
+    console.log(data.value);
+    let formKaryawanNew = {...this.state.formKaryawan};
+    let timestamp = new Date().getTime();
+    if(!this.state.isUpdate) formKaryawanNew['id'] = timestamp;
+    formKaryawanNew['jenis_kelamin'] = data.value;
     this.setState ({
       formKaryawan: formKaryawanNew
     })
@@ -121,8 +132,8 @@ class App extends Component {
                       <Input onChange={this.handleFormChange} value={this.state.formKaryawan.jabatan} name="jabatan" icon='sitemap' type='text' iconPosition='left' placeholder='Jabatan' />
                     </Form.Field>
                     <Form.Field>
-                      <Input onChange={this.handleFormChange} value={this.state.formKaryawan.jenis_kelamin} name="jenis_kelamin" icon='address card' type='text' iconPosition='left' placeholder='Jenis Kelamin' />
-                      {/* <Select compact options={options} onChange={this.handleFormChange} defaultValue={this.state.formKaryawan.jenis_kelamin} /> */}
+                      {/* <Input onChange={this.handleFormChange} value={this.state.formKaryawan.jenis_kelamin} name="jenis_kelamin" icon='address card' type='text' iconPosition='left' placeholder='Jenis Kelamin' /> */}
+                      <Select compact options={options} onChange={this.handleOptionChange} value={this.state.formKaryawan.jenis_kelamin} defaultValue={this.state.formKaryawan.jenis_kelamin} />
                     </Form.Field>
                     <Form.Field>
                       <Input onChange={this.handleFormChange} value={this.state.formKaryawan.tanggal_lahir} name="tanggal_lahir" icon='calendar' type='date' iconPosition='left' placeholder='Tanggal Lahir' />
@@ -138,7 +149,7 @@ class App extends Component {
         </Container>
         <br />
         <Container>
-          <Segment textAlign='center'>
+          <Segment textAlign='center' color='teal'>
             <h4>Tabel Data Karyawan</h4>
           </Segment>
           <Table celled>
